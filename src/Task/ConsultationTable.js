@@ -1,7 +1,8 @@
 import React from 'react'
 import { MdDeleteOutline } from "react-icons/md";
 
-function ConsultationTable() {
+function ConsultationTable({Data}) {
+ 
   return (
     <div className='w-full h-3/4 border-2 '>
         <table className='border-2 shadow-md rounded-md w-full '  >
@@ -17,18 +18,23 @@ function ConsultationTable() {
                 </tr>
             </thead>
             <tbody>
-                <tr className='border shadow-sm text-center'>
-                    <td className='py-4 px-10'><MdDeleteOutline className='text-2xl text-red-500' /></td>
-                    <td className='text-lg'>9:00 AM</td>
-                    <td className='text-lg'>3:00 PM</td>
-                    <td className='text-lg'>350</td>
-                    <td className='text-lg'>0</td>
-                    <td className='text-lg'><button className='border-2 border-green-500 px-4 text-green-500 font-semibold pb-1  rounded-md'> Active</button></td>
-                    <td className='text-lg'>No</td>
-                </tr>
-                <tr >
-                    <td className='py-4 px-10'><MdDeleteOutline className='text-xl text-red-500' /></td>
-                </tr>
+                {
+                    Data.map((elem)=>(
+
+                        <tr className='border shadow-sm text-center'>
+                        <td className='py-4 px-10'><MdDeleteOutline className='text-2xl text-red-500' /></td>
+                        <td className='text-lg'>{elem.fromTime}</td>
+                        <td className='text-lg'>{elem.toTime}</td>
+                        <td className='text-lg'>{elem.consulationCharges}</td>
+                        <td className='text-lg'>{elem.followUpcharges}</td>
+                        <td className='text-lg'><button className='border-2 border-green-500 px-4 text-green-500 font-semibold pb-1  rounded-md'> Active</button></td>
+                        <td className='text-lg'>{elem.isFree === true ? 'Yes' : 'No'}</td>
+                    </tr>
+                        
+                    ))
+                }
+               
+               
             </tbody>
         </table>
     </div>
