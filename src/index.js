@@ -4,6 +4,8 @@ import './index.css';
 import reportWebVitals from './reportWebVitals';
 
 import App from './App';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 
@@ -17,6 +19,7 @@ root.render(
 
  <div  >
  <App/>
+ <ToastContainer/>
   
  </div>
   </React.StrictMode>    
