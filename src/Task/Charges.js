@@ -16,6 +16,7 @@ import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import ConsultationTable from "./ConsultationTable";
 import { toast, Bounce } from "react-toastify";
+import dayjs from "dayjs";
 
 function Charges() {
   const d = new Date();
@@ -25,14 +26,17 @@ function Charges() {
     fromTime: "",
     toTime: "",
     consulationCharges: "",
-    followUpcharges: "",
+    followUpcharges: "0",
     isFree: false,
     followUpApplication: false,
+    active: true,
   };
 
   const [postData, setpostData] = useState(PostObj);
 
   const [Data, setData] = useState([]);
+
+ 
 
   const HandleChange = (event) => {
     const { name, value, checked, type } = event.target;
@@ -48,26 +52,47 @@ function Charges() {
     if (type === "text") {
       setpostData({ ...postData, [name]: value });
     }
+
+    if (type === "checkbox" && name === "active") {
+      setpostData({ ...postData, [name]: checked});
+      
+    }
   };
 
   const AddFromTime = (e) => {
-    setpostData({ ...postData, fromTime: e.format("HH:mm A") });
+    const uniqueTime = e.format("HH:mm A");
+    const milliseconds = dayjs(uniqueTime, 'HH:mm A').valueOf();
+    setpostData({ ...postData, fromTime: uniqueTime, fromTimeMilliseconds: milliseconds });
     console.log(postData);
+   
   };
 
   const AddToTime = (e) => {
-    setpostData({ ...postData, toTime: e.format("HH:mm A") });
+    const uniqueTime = e.format("HH:mm A");
+    const milliseconds = dayjs(uniqueTime, 'HH:mm A').valueOf();
+    setpostData({ ...postData, toTime: uniqueTime, toTimeMilliseconds: milliseconds });
     console.log(postData);
   };
 
+
+  
+  
   const HandleSubmit = () => {
     const { consulationCharges, followUpcharges, fromTime, toTime } = postData;
-
+    
+    const isTimeSlotExists = Data.some(
+    (item) => 
+      (fromTime >= item.fromTime && fromTime < item.toTime ) ||
+      (toTime > item.fromTime && toTime <= item.toTime) ||
+      (toTime <= item.fromTime && toTime >= item.toTime)
+    )
+  
+  
     if (
       consulationCharges === "" ||
       followUpcharges === "" ||
       fromTime === "" ||
-      toTime === ""
+      toTime === "" 
     ) {
       toast.error(
         `${
@@ -93,7 +118,26 @@ function Charges() {
           transition: Bounce,
         }
       );
-    } else {
+    }
+
+
+    else if(isTimeSlotExists === true){
+      toast.error("Time Slot is Booked Already !",{
+        position: "top-right",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        transition: Bounce,
+
+      })
+
+    }
+    
+    else {
       setData([...Data, postData]);
       toast.success("Appointment Sucessful !", {
         position: "top-right",
@@ -107,6 +151,10 @@ function Charges() {
         transition: Bounce,
       });
     }
+
+   
+
+   
   };
 
   return (
@@ -217,7 +265,16 @@ function Charges() {
             />
           </div>
           <div className="flex justify-between">
-            <FormControlLabel control={<Checkbox />} label="Active" />
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={postData.active}
+                  name="active"
+                  onChange={HandleChange}
+                />
+              }
+              label="Active"
+            />
             <div className="flex gap-x-2">
               <button className="border-2 border-red-500 py-2 px-4 text-xl font-semibold rounded-md text-red-500">
                 Reset

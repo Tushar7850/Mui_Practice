@@ -27,7 +27,11 @@ function ConsultationTable({Data}) {
                         <td className='text-lg'>{elem.toTime}</td>
                         <td className='text-lg'>{elem.consulationCharges}</td>
                         <td className='text-lg'>{elem.followUpcharges}</td>
-                        <td className='text-lg'><button className='border-2 border-green-500 px-4 text-green-500 font-semibold pb-1  rounded-md'> Active</button></td>
+                        <td className='text-lg'>{elem.active ? (
+                        <button className='border-2 border-green-500 px-4 text-green-500 font-semibold pb-1  rounded-md'> Active</button>
+                        ):(
+                            <button className='border-2 border-red-500 px-4 text-red-500 font-semibold pb-1  rounded-md'> NO</button>
+                        )}</td>
                         <td className='text-lg'>{elem.isFree === true ? 'Yes' : 'No'}</td>
                     </tr>
                         

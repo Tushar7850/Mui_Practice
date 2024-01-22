@@ -8,7 +8,7 @@ import Select from '@mui/material/Select';
 // 
 import Department from './Department'
 import Charges from './Charges'
-// import ConsultationTable from './ConsultationTable'
+
 
 function ConsultationCharges() {
 
@@ -35,7 +35,7 @@ function ConsultationCharges() {
     </div>
     <div className='w-[75%] flex flex-col gap-10 mx-5'>
       <Charges />
-      {/* <ConsultationTable /> */}
+    
     </div>
     </main>
     <div className='flex justify-end mt-10 mr-10'>
